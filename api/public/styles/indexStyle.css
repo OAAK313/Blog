@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #EEE8AA;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  min-height: 78.5vh;
+  margin-top: -1em;
+}
+
+.posts .noPosts {
+  width: 80%;
+  height: 78.5vh;
+  border-left: 0.3em solid black;
+  border-right: 0.3em solid black;
+  background-color: #F0E68C;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.posts .noPosts h3 {
+  height: 20%;
+  font-size: 3em;
+  text-align: center;
+  font-family: 'EB Garamond', 'Sans Serif';
+}
+
+.posts form {
+  width: 80%;
+  min-height: 78.5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 0.3em solid black;
+  border-right: 0.3em solid black;
+  background-color: #EEE8AA;
+  
+}
+
+.posts form button {
+  height: 26.2vh;
+  white-space: normal;
+  word-wrap: break-word;
+  background-color: #F0E68C;
+  border: none;
+  border-top: 0.1em solid black;
+  border-bottom: 0.1em solid black;
+  font-family: 'Lora', 'Sans Serif';
+}
+
+.posts form button:hover {
+  background-color: #BDB76B ;
+}
+
+.posts form hr {
+  background-color: black;
+  width: 100%;
+  height: 0.1em;
+}
+
+.postTitle {
+  margin-bottom: -0.5%;
+  margin-top: 3%;
+}
+
+.postContent {
+  margin-bottom: 3%;
+}

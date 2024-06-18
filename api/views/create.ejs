@@ -1,0 +1,19 @@
+<%- include("partials/header.ejs") %>
+
+<div class="newPost">
+  <form action="/view" method="POST">
+    <textarea
+      class="newPostTitle"
+      name="postTitle"
+      placeholder="Title"
+    ></textarea>
+    <textarea
+      class="newPostContent"
+      name="postContent"
+      placeholder="Post"
+    ></textarea>
+    <button class="submit" type="submit">Publish</button>
+  </form>
+</div>
+
+<%- include("partials/footer.ejs") %>
