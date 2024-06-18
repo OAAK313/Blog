@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import path from "path";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ function main() {
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static("public"));
   app.set('view engine', 'ejs');
+  app.set('views', path.join(__dirname, 'views'));
 
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
