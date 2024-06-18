@@ -33,7 +33,7 @@ function main() {
     toViewNewPost = false;
     toViewEditedPost = false;
     post = {};
-    res.render("index.ejs", { posts: posts });
+    res.render("index", { posts: posts });
   });
 
   app.post("/view", (req, res) => {
