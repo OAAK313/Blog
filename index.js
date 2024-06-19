@@ -86,7 +86,7 @@ function loadPosts() {
 
 function savePosts(posts) {
   const dataJSON = JSON.stringify(posts);
-  fs.writeFileSync(path.join(__dirname, "posts.json"), dataJSON);
+  console.log(fs.writeFileSync(path.join(__dirname, "posts.json"), dataJSON));
 }
 
 function createPost(title, content) {
