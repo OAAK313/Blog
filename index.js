@@ -61,7 +61,7 @@ function main() {
     //   res.render("view.ejs", { post });
     // }
     // res.render("view.ejs", { post });
-    res.send(post);
+    res.send(post === undefined ? "313" : "0");
   });
 
   app.post("/create", (req, res) => {
