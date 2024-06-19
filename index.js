@@ -1,11 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 const app = express();
 const port = process.env.PORT || 3000;
 var posts = [];
@@ -19,9 +18,9 @@ function main() {
   posts.reverse();
 
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(express.static(path.join(__dirname, 'public')));
-  app.set('view engine', 'ejs');
-  app.set('views', path.join(__dirname, 'views'));
+  app.use(express.static(path.join(__dirname, "public")));
+  app.set("view engine", "ejs");
+  app.set("views", path.join(__dirname, "views"));
 
   app.listen(port, () => {
     console.log(`Listening on port ${port}`);
@@ -47,11 +46,7 @@ function main() {
       post = createPost(req.body.postTitle, req.body.postContent);
     } else if (toViewEditedPost) {
       if (req.body.updatePost) {
-        post = editPost(
-          req.body.updatePost,
-          req.body.postTitle,
-          req.body.postContent
-        );
+        post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
       } else {
         post = posts[req.body.cancelPost];
       }
@@ -60,6 +55,7 @@ function main() {
     }
     toViewNewPost = false;
     toViewEditedPost = false;
+    console.log(post);
     if (post === undefined) {
       res.redirect("/home");
     } else {
