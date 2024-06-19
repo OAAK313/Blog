@@ -79,7 +79,7 @@ function loadPosts() {
     console.log(JSON.parse(dataJSON));
     return JSON.parse(dataJSON);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return [];
   }
 }
