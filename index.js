@@ -43,7 +43,7 @@ function main() {
 
   app.post("/view", (req, res) => {
     if (toViewNewPost) {
-      post = createPost(req.body.postTitle, req.body.postContent);
+      post = createPost(req.body.postTitle, req.body.postContent, res);
     } else if (toViewEditedPost) {
       if (req.body.updatePost) {
         post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
@@ -61,7 +61,6 @@ function main() {
     //   res.render("view.ejs", { post });
     // }
     // res.render("view.ejs", { post });
-      res.send(post.ID);
   });
 
   app.post("/create", (req, res) => {
@@ -85,7 +84,7 @@ function main() {
   });
 }
 
-function createPost(title, content) {
+function createPost(title, content, res) {
   if (checkPost(title, content)) {
     const post = {
       ID: posts.length,
@@ -93,6 +92,7 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
+    res.send(post);
     return post;
   }
 }
