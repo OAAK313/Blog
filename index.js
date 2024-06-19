@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 var posts = [];
+console.log("posts set to []");
 var post = {};
 
 main();
@@ -25,15 +26,17 @@ function main() {
   });
 
   app.get("/", (req, res) => {
+    console.log("1", posts);
     res.redirect("/home");
   });
 
   app.post("/home", (req, res) => {
+    console.log("2", posts);
     res.redirect("/home");
   });
 
   app.get("/home", (req, res) => {
-    console.log("1", posts);
+    console.log("3", posts);
     post = {};
     res.render("index.ejs", { posts: posts });
   });
