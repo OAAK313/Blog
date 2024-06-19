@@ -38,23 +38,16 @@ function main() {
   });
 
   app.post("/view", (req, res) => {
-    console.log("/view");
-    console.log(req.body);
     if (req.body.newPost) {
       post = createPost(req.body.postTitle, req.body.postContent);
-      console.log("Create: ", post);
     } else if (req.body.updatePost) {
       post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
-      console.log("Edit: ", post);
     } else if (req.body.cancelPost) {
       post = posts[posts.findIndex((post) => post.ID == req.body.cancelPost)];
-      console.log("Cancel Edit: ", post);
     } else {
       post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
-      console.log("View: ", post);
     }
     if (post === undefined) {
-      console.log("Post undefined, redirecting to home");
       res.redirect("/home");
     } else {
       res.render("view.ejs", { post });
