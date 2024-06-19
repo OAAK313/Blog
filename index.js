@@ -43,7 +43,6 @@ function main() {
 
   app.post("/view", (req, res) => {
     if (toViewNewPost) {
-      res.send(req.body.postTitle);
       post = createPost(req.body.postTitle, req.body.postContent);
     } else if (toViewEditedPost) {
       if (req.body.updatePost) {
@@ -62,6 +61,7 @@ function main() {
     //   res.render("view.ejs", { post });
     // }
     // res.render("view.ejs", { post });
+      res.send(req.body.postTitle === undefined ? "313" : "0");
   });
 
   app.post("/create", (req, res) => {
