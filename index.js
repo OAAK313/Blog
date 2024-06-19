@@ -55,12 +55,12 @@ function main() {
     }
     toViewNewPost = false;
     toViewEditedPost = false;
-    console.log(post);
-    if (post === undefined) {
-      res.redirect("/home");
-    } else {
-      res.render("view.ejs", { post });
-    }
+    // if (post === undefined) {
+    //   res.redirect("/home");
+    // } else {
+    //   res.render("view.ejs", { post });
+    // }
+    res.render("view.ejs", { post });
   });
 
   app.post("/create", (req, res) => {
