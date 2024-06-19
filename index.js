@@ -38,6 +38,7 @@ function main() {
 
   app.post("/view", (req, res) => {
     let posts = loadPosts();
+    console.log(posts);
     if (req.body.newPost) {
       post = createPost(req.body.postTitle, req.body.postContent);
     } else if (req.body.updatePost) {
