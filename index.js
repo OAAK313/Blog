@@ -34,7 +34,6 @@ function main() {
 
   app.get("/home", (req, res) => {
     post = {};
-    console.log(posts);
     res.render("index.ejs", { posts: posts });
   });
 
@@ -80,6 +79,7 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
+    console.log(posts);
     return post;
   }
 }
