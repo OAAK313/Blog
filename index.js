@@ -51,6 +51,7 @@ function main() {
     } else {
       post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
     }
+    console.log("view:", posts);
     if (post === undefined) {
       res.redirect("/home");
     } else {
@@ -83,7 +84,7 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
-    console.log(posts);
+    console.log("create:", posts);
     return post;
   }
 }
