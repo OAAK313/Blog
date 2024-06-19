@@ -45,7 +45,7 @@ function main() {
   app.post("/view", (req, res) => {
   console.log("Received POST /view request");
   console.log("Request body:", req.body);
-
+  console.log(toViewNewPost, toViewEditedPost);
   if (toViewNewPost) {
     console.log("Creating a new post");
     post = createPost(req.body.postTitle, req.body.postContent);
