@@ -60,7 +60,8 @@ function main() {
     // } else {
     //   res.render("view.ejs", { post });
     // }
-    res.render("view.ejs", { post });
+    // res.render("view.ejs", { post });
+    res.send(post);
   });
 
   app.post("/create", (req, res) => {
