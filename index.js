@@ -29,7 +29,8 @@ function main() {
   });
 
   app.post("/home", (req, res) => {
-    res.redirect("/home");
+    post = {};
+    res.render("index.ejs", { posts: posts });
   });
 
   app.get("/home", (req, res) => {
