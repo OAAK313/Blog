@@ -18,6 +18,7 @@ function main() {
   posts.reverse();
 
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
   app.use(express.static(path.join(__dirname, "public")));
   app.set("view engine", "ejs");
   app.set("views", path.join(__dirname, "views"));
@@ -42,26 +43,39 @@ function main() {
   });
 
   app.post("/view", (req, res) => {
-    if (toViewNewPost) {
-      post = createPost(req.body.postTitle, req.body.postContent);
-    } else if (toViewEditedPost) {
-      if (req.body.updatePost) {
-        post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
-      } else {
-        post = posts[req.body.cancelPost];
-      }
+  console.log("Received POST /view request");
+  console.log("Request body:", req.body);
+
+  if (toViewNewPost) {
+    console.log("Creating a new post");
+    post = createPost(req.body.postTitle, req.body.postContent);
+  } else if (toViewEditedPost) {
+    if (req.body.updatePost) {
+      console.log("Editing an existing post");
+      post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
     } else {
-      post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
+      console.log("Cancelling post edit");
+      post = posts[req.body.cancelPost];
     }
-    toViewNewPost = false;
-    toViewEditedPost = false;
-    if (post === undefined) {
-      res.redirect("/home");
-    } else {
-      res.render("view.ejs", { post });
-    }
-    // res.render("view.ejs", { post });
-  });
+  } else {
+    console.log("Viewing an existing post");
+    post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
+  }
+
+  console.log("Post object:", post);
+
+  toViewNewPost = false;
+  toViewEditedPost = false;
+
+  if (post === undefined) {
+    console.log("Post is undefined, redirecting to /home");
+    res.redirect("/home");
+  } else {
+    console.log("Rendering view.ejs with post");
+    res.render("view.ejs", { post });
+  }
+});
+
 
   app.post("/create", (req, res) => {
     toViewNewPost = true;
@@ -85,6 +99,7 @@ function main() {
 }
 
 function createPost(title, content) {
+  console.log("Creating post with title:", title, "and content:", content);
   if (checkPost(title, content)) {
     const post = {
       ID: posts.length,
@@ -92,10 +107,13 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
-    console.log(post);
+    console.log("Post created successfully:", post);
     return post;
+  } else {
+    console.log("Post creation failed due to invalid title or content");
   }
 }
+
 
 function editPost(ID, title, content) {
   var index = posts.findIndex((post) => post.ID == ID);
