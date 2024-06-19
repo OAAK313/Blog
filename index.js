@@ -8,8 +8,6 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 var posts = [];
-var toViewNewPost = false;
-var toViewEditedPost = false;
 var post = {};
 
 main();
@@ -18,7 +16,6 @@ function main() {
   posts.reverse();
 
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
   app.use(express.static(path.join(__dirname, "public")));
   app.set("view engine", "ejs");
   app.set("views", path.join(__dirname, "views"));
@@ -36,57 +33,33 @@ function main() {
   });
 
   app.get("/home", (req, res) => {
-    toViewNewPost = false;
-    toViewEditedPost = false;
     post = {};
     res.render("index.ejs", { posts: posts });
   });
 
   app.post("/view", (req, res) => {
-  console.log("Received POST /view request");
-  console.log("Request body:", req.body);
-  console.log(toViewNewPost, toViewEditedPost);
-  if (toViewNewPost) {
-    console.log("Creating a new post");
-    post = createPost(req.body.postTitle, req.body.postContent);
-  } else if (toViewEditedPost) {
-    if (req.body.updatePost) {
-      console.log("Editing an existing post");
+    if (req.body.newPost) {
+      post = createPost(req.body.postTitle, req.body.postContent);
+    } else if (req.body.updatePost) {
       post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
+    } else if (req.body.cancelPost) {
+      post = posts[posts.findIndex((post) => post.ID == req.body.cancelPost)];
     } else {
-      console.log("Cancelling post edit");
-      post = posts[req.body.cancelPost];
+      post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
     }
-  } else {
-    console.log("Viewing an existing post");
-    post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
-  }
-
-  console.log("Post object:", post);
-
-  toViewNewPost = false;
-  toViewEditedPost = false;
-
-  if (post === undefined) {
-    console.log("Post is undefined, redirecting to /home");
-    res.redirect("/home");
-  } else {
-    console.log("Rendering view.ejs with post");
-    res.render("view.ejs", { post });
-  }
-});
-
+    if (post === undefined) {
+      res.redirect("/home");
+    } else {
+      res.render("view.ejs", { post });
+    }
+  });
 
   app.post("/create", (req, res) => {
-    toViewNewPost = true;
-    toViewEditedPost = false;
     res.render("create.ejs");
   });
 
   app.post("/edit", (req, res) => {
-    toViewNewPost = false;
     if (req.body.updatePost) {
-      toViewEditedPost = true;
       post = posts[posts.findIndex((post) => post.ID == req.body.updatePost)];
       res.render("edit.ejs", { post });
     } else if (req.body.deletePost) {
@@ -99,7 +72,6 @@ function main() {
 }
 
 function createPost(title, content) {
-  console.log("Creating post with title:", title, "and content:", content);
   if (checkPost(title, content)) {
     const post = {
       ID: posts.length,
@@ -107,13 +79,9 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
-    console.log("Post created successfully:", post);
     return post;
-  } else {
-    console.log("Post creation failed due to invalid title or content");
   }
 }
-
 
 function editPost(ID, title, content) {
   var index = posts.findIndex((post) => post.ID == ID);
