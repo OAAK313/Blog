@@ -76,8 +76,10 @@ function loadPosts() {
   try {
     const dataBuffer = fs.readFileSync(path.join(__dirname, "posts.json"));
     const dataJSON = dataBuffer.toString();
+    console.log(JSON.parse(dataJSON));
     return JSON.parse(dataJSON);
   } catch (e) {
+    console.log(e);
     return [];
   }
 }
