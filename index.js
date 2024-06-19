@@ -29,12 +29,12 @@ function main() {
   });
 
   app.post("/home", (req, res) => {
-    post = {};
-    res.render("index.ejs", { posts: posts });
+    res.redirect("/home");
   });
 
   app.get("/home", (req, res) => {
     post = {};
+    console.log(posts);
     res.render("index.ejs", { posts: posts });
   });
 
