@@ -33,6 +33,7 @@ function main() {
   });
 
   app.get("/home", (req, res) => {
+    console.log(posts);
     post = {};
     res.render("index.ejs", { posts: posts });
   });
