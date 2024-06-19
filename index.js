@@ -43,7 +43,7 @@ function main() {
 
   app.post("/view", (req, res) => {
     if (toViewNewPost) {
-      post = createPost(req.body.postTitle, req.body.postContent, res);
+      post = createPost(req.body.postTitle, req.body.postContent);
     } else if (toViewEditedPost) {
       if (req.body.updatePost) {
         post = editPost(req.body.updatePost, req.body.postTitle, req.body.postContent);
@@ -84,7 +84,7 @@ function main() {
   });
 }
 
-function createPost(title, content, res) {
+function createPost(title, content) {
   if (checkPost(title, content)) {
     const post = {
       ID: posts.length,
@@ -92,7 +92,7 @@ function createPost(title, content, res) {
       content: content.toString(),
     };
     posts.unshift(post);
-    res.send(post);
+    console.log(post);
     return post;
   }
 }
