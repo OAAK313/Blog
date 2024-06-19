@@ -55,11 +55,11 @@ function main() {
     }
     toViewNewPost = false;
     toViewEditedPost = false;
-    // if (post === undefined) {
-    //   res.redirect("/home");
-    // } else {
-    //   res.render("view.ejs", { post });
-    // }
+    if (post === undefined) {
+      res.redirect("/home");
+    } else {
+      res.render("view.ejs", { post });
+    }
     // res.render("view.ejs", { post });
   });
 
