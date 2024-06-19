@@ -2,20 +2,17 @@ import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
-var posts = [];
-console.log("posts set to []");
 var post = {};
 
 main();
 
 function main() {
-  posts.reverse();
-
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(express.static(path.join(__dirname, "public")));
   app.set("view engine", "ejs");
@@ -26,22 +23,21 @@ function main() {
   });
 
   app.get("/", (req, res) => {
-    console.log("1", posts);
     res.redirect("/home");
   });
 
   app.post("/home", (req, res) => {
-    console.log("2", posts);
     res.redirect("/home");
   });
 
   app.get("/home", (req, res) => {
-    console.log("3", posts);
+    const posts = loadPosts();
     post = {};
     res.render("index.ejs", { posts: posts });
   });
 
   app.post("/view", (req, res) => {
+    let posts = loadPosts();
     if (req.body.newPost) {
       post = createPost(req.body.postTitle, req.body.postContent);
     } else if (req.body.updatePost) {
@@ -51,7 +47,6 @@ function main() {
     } else {
       post = posts[posts.findIndex((post) => post.ID == req.body.postID)];
     }
-    console.log("view:", posts);
     if (post === undefined) {
       res.redirect("/home");
     } else {
@@ -64,6 +59,7 @@ function main() {
   });
 
   app.post("/edit", (req, res) => {
+    let posts = loadPosts();
     if (req.body.updatePost) {
       post = posts[posts.findIndex((post) => post.ID == req.body.updatePost)];
       res.render("edit.ejs", { post });
@@ -76,7 +72,23 @@ function main() {
   });
 }
 
+function loadPosts() {
+  try {
+    const dataBuffer = fs.readFileSync(path.join(__dirname, "posts.json"));
+    const dataJSON = dataBuffer.toString();
+    return JSON.parse(dataJSON);
+  } catch (e) {
+    return [];
+  }
+}
+
+function savePosts(posts) {
+  const dataJSON = JSON.stringify(posts);
+  fs.writeFileSync(path.join(__dirname, "posts.json"), dataJSON);
+}
+
 function createPost(title, content) {
+  let posts = loadPosts();
   if (checkPost(title, content)) {
     const post = {
       ID: posts.length,
@@ -84,12 +96,13 @@ function createPost(title, content) {
       content: content.toString(),
     };
     posts.unshift(post);
-    console.log("create:", posts);
+    savePosts(posts);
     return post;
   }
 }
 
 function editPost(ID, title, content) {
+  let posts = loadPosts();
   var index = posts.findIndex((post) => post.ID == ID);
   if (checkPost(title, content)) {
     posts[index] = {
@@ -97,6 +110,7 @@ function editPost(ID, title, content) {
       title: title,
       content: content,
     };
+    savePosts(posts);
     return posts[index];
   }
 }
@@ -117,9 +131,11 @@ function checkPost(title, content) {
 }
 
 function deletePost(ID) {
+  let posts = loadPosts();
   var postIndex = posts.findIndex((post) => post.ID === parseInt(ID));
   posts.splice(postIndex, 1);
   for (var i = postIndex - 1; i >= 0; i--) {
     posts[i].ID--;
   }
+  savePosts(posts);
 }
