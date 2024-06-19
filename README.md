@@ -5,7 +5,6 @@ Capstone Project 3
 Blog developed using EJS, CSS, JS, ExpressJS.
 
 https://blog-313.vercel.app/
-
 Blog is not working correctly on the link above as data is not persisted.
 
 To run the blog locally, follow the steps below:
